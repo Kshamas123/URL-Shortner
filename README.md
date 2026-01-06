@@ -24,7 +24,8 @@ It’s built using the **MERN stack** (MongoDB, Express.js, React, Node.js).
 - Redirect users from the short link to the long link.
 - Prevents duplicate entries (checks existing URLs).
 - Modern futuristic UI for link input.
-
+- Validates the user URL using regex
+  
 ---
 
 
