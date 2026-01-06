@@ -13,8 +13,16 @@ const Shorturl = () => {
     const response=await axios.post('http://localhost:3000/shorten-url',{
       urllink:urllink})
     const data=response.data.shortlink
+    
+    if(data=="not valid url")
+    {
+      setfinal_short_link("not valid url");
+    }
+    else
+    {
     const temp = `http://localhost:3000/final_link/${data}`;
     setfinal_short_link(temp);
+    }
     }
     catch(error)
     {

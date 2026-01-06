@@ -11,19 +11,26 @@ app.use(express.json())
 db()
 app.post('/shorten-url', async (req, res) => {
     try {
+        
         const urlink = req.body.urllink
+        console.log(urlink)
         if(urlink==null ||urlink=="" || urlink==" ")
             return res.status(400).json({
 "error": "Invalid input data",
 "details": "The 'email' field is missing."
 })
+const pattern =
+  /(https:\/\/www\.|http:\/\/www\.|https:\/\/|http:\/\/)?[a-zA-Z]{2,}(\.[a-zA-Z]{2,})(\.[a-zA-Z]{2,})?\/[a-zA-Z0-9]{2,}|((https:\/\/www\.|http:\/\/www\.|https:\/\/|http:\/\/)?[a-zA-Z]{2,}(\.[a-zA-Z]{2,})(\.[a-zA-Z]{2,})?)|(https:\/\/www\.|http:\/\/www\.|https:\/\/|http:\/\/)?[a-zA-Z0-9]{2,}\.[a-zA-Z0-9]{2,}\.[a-zA-Z0-9]{2,}(\.[a-zA-Z0-9]{2,})?/g;
+
+  if(pattern.test(urlink))
+  {
         const existing = await url_model.findOne({ long_url: urlink });
      console.log(existing)
         if (existing) {
             console.log("URL already exists");
             return res.json({ shortlink: existing.short_link });
         }
-        const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789~!@#$%^&*()_+=-';
+        const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
         const shortlink = Array.from(randomBytes(10)).map(b => chars[b % chars.length]).join('');
         console.log(shortlink)
         const r = await url_model.create({
@@ -33,6 +40,12 @@ app.post('/shorten-url', async (req, res) => {
         console.log(r)
         return res.json({ shortlink:shortlink })
     }
+
+else
+{
+    return res.json({ shortlink: "not valid url" })
+}
+}
     catch (err) {
         console.log(err)
         return res.json({ errormessage: err })
