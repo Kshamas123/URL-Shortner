@@ -13,10 +13,20 @@ const Shorturl = () => {
     const response=await axios.post('http://localhost:3000/shorten-url',{
       urllink:urllink})
     const data=response.data.shortlink
-    
+     console.log(data)
     if(data=="not valid url")
     {
       setfinal_short_link("not valid url");
+    }
+    else
+    if(data=="URL does not exist")
+    {
+      setfinal_short_link("URL does not exist");
+    }
+    else
+    if(data=="URL does not exist or is unreachable")
+    {
+      setfinal_short_link("URL does not exist or is unreachable");
     }
     else
     {
